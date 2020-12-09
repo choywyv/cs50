@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quoted
+{% endblock %}
+
+{% block main %}
+
+  <table id="table1"  class="table table-striped"></table>
+
+    <script>
+    let obj = {{ json|safe }}, table = document.getElementById ("table1"), tr, td;
+
+    Object.keys (obj).forEach (key => {
+      tr = document.createElement ("tr");
+      table.appendChild (tr);
+
+      td = document.createElement ("td");
+      tr.appendChild (td);
+      td.innerHTML = key.charAt(0).toUpperCase() + key.slice(1);
+
+      td = document.createElement ("td");
+      tr.appendChild (td);
+      td.innerHTML = (key == "price") ? "$" + obj[key].toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : obj[key];
+
+
+    })
+
+    </script>
+
+{% endblock %}
+

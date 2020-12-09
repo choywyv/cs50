@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Buy
+{% endblock %}
+
+{% block main %}
+
+<form action="/buy" method="post" id="form1">
+  <div class="form-group">
+    <input type="text" name="symbol" id="symbol" value="{{ symbol }}" placeholder="Enter stock symbol" autofocus>
+    <button type="button" class="btn btn-primary" onclick="get_price (document.getElementById ('symbol').value);">Check Price</button>
+    <div id="div1"></div>
+  </div>
+  <div class="form-group">
+    <input type="number" name="shares" id="shares" placeholder="Enter quantity to buy" style="visibility: hidden;">
+  </div>
+
+
+  <button type="submit" class="btn btn-primary" id="btn_buy"style="visibility: hidden;" placeholder="Enter stock symbol">Buy</button>
+</form>
+
+<script src="/static/script.js"></script>
+
+<script>
+  if (document.getElementById ("symbol").value == "None") document.getElementById ("symbol").value = "";
+
+  get_price = async (val) => {
+    document.getElementById ("div1").innerHTML = await getPrice (val);
+    document.getElementById ("shares").style.visibility = "visible";
+    document.getElementById ("btn_buy").style.visibility = "visible";
+  }
+</script>
+
+{% endblock %}
+

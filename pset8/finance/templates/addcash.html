@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block main %}
+
+  <b>{{ title }}</b>
+  <br><br>
+
+  <form action="/addcash" method="post">
+    <div class="form-group">
+      <input autocomplete="off" autofocus class="form-control" id="amount" name="amount" placeholder="Enter Amount to add" type="number" pattern="^\d*(\.\d{0,2})?$" >
+    </div>
+    <div>
+      <span id="span1"></span>
+    </div>
+
+    <br>
+
+    <button class="btn btn-primary" type="button" onclick="add_cash (document.getElementById ('amount').value);">Add</button>
+  </form>
+
+  <br>
+
+  <div id="div1"></div>
+
+  <script src="/static/script.js"></script>
+
+  <script>
+
+    add_cash = async (val) => {
+        if (val == "") {
+            document.getElementById ("div1").innerHTML = "Please enter Amount";
+            document.getElementById ("amount").focus ();
+        }
+
+        else document.getElementById ('div1').innerHTML = await addCash (val);
+    }
+
+  </script>
+
+{% endblock %}
+

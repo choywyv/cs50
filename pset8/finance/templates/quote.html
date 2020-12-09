@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block main %}
+
+  <b>{{ title }}</b>
+  <br><br>
+
+  <form action="/quote" method="post">
+    <div class="form-group">
+      <input type="text" name="symbol" placeholder="Enter stock symbol">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+  </form>
+
+{% endblock %}

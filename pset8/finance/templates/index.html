@@ -1,0 +1,106 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block main %}
+
+<table class="table table-striped" id="table1">
+
+</table>
+
+<div id="div1"></div>
+
+  <div id="light" class="white_content">
+    <div id="symbol"></div>
+    <button type="button" id="btn_buy" class="btn btn-primary" onclick="window.location.href='/buy?symbol=' + this.value">Buy</button>
+    <button type="button" id="btn_sell" class="btn btn-primary" onclick="window.location.href='/sell?symbol=' + this.value">Sell</button>
+    <button type="button" class="btn btn-primary" onclick="document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">Close</button>
+  </div>
+  <div id="fade" class="black_overlay"></div>
+
+<script>
+
+  let table_data = {{ table_data|safe }}, table = document.getElementById ("table1"), tr, th, td, thead, tbody, format_numeric = ["Price", "TOTAL", "CASH"];
+
+  thead = document.createElement ("thead");
+  table.appendChild (thead);
+
+  tr = document.createElement ("tr");
+  thead.appendChild (tr);
+  {{ table_heading|safe }}.forEach ((item) => {
+    th = document.createElement ("th");
+    th.innerHTML = item;
+    tr.appendChild (th);
+  });
+
+  tbody = document.createElement ("tbody");
+  table.appendChild (tbody);
+
+  for (var i = 0; i < table_data.length; i++) {
+    tr = document.createElement ("tr");
+
+    for (var key in table_data[i]) {
+      if (key == "CASH") {
+        tr = document.createElement ("tr");
+        td = document.createElement ("td");
+        td.innerHTML = "CASH";
+        tr.appendChild (td);
+
+        for (var i = 0; i < 3; i++) {
+          td = document.createElement ("td");
+          tr.appendChild (td);
+        }
+
+        td = document.createElement ("td");
+        td.innerHTML = "$" + table_data[table_data.length -1]["CASH"].toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+        td.style.textAlign = "right";
+        tr.appendChild (td);
+      }
+      else if (table_data[i].hasOwnProperty (key)) {
+        td = document.createElement ("td");
+        td.innerHTML = (format_numeric.includes (key)) ? "$" + table_data[i][key].toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : table_data[i][key];
+        if (key == "Symbol") td.innerHTML = "<a href='javascript:void(0)' onclick='a_clicked (this.innerHTML);'>" + td.innerHTML + "</a>";
+        td.style.textAlign = (format_numeric.includes (key) || key == "Shares") ? "right" : "";
+        tr.appendChild (td);
+      }
+    }
+
+    tbody.appendChild (tr);
+  }
+
+
+  {% if title == "Index" %}
+
+  let total = 0;
+  for (var i = 0; i< table.tBodies[0].rows.length; i++) {
+    total += parseFloat (table.tBodies[0].rows[i].cells[table.tBodies[0].rows[i].cells.length - 1].innerHTML.replace ("$", "").replace (",", ""));
+  }
+
+  tr = document.createElement ("tr");
+  table.tBodies[0].appendChild (tr);
+  for (var i = 0; i < 4; i++) {
+    td = document.createElement ("td");
+    tr.appendChild (td);
+  }
+  td = document.createElement ("td");
+  td.style.textAlign = "right";
+  td.innerHTML = "<b>$" + total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</b>";
+  tr.appendChild (td);
+
+{% endif %}
+
+
+  a_clicked = (symbol) => {
+    document.getElementById ("symbol").innerHTML = "Stock " + symbol;
+    document.getElementById ("btn_buy").value = symbol;
+    document.getElementById ("btn_sell").value = symbol;
+    document.getElementById ("symbol").style.marginBottom = "5%";
+    document.getElementById ("light").style.display = "block";
+    document.getElementById ("fade").style.display = "block";
+  }
+
+</script>
+
+{% endblock %}

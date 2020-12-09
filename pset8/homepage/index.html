@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="styles.css" rel="stylesheet">
+
+        <title>My Webpage</title>
+
+        <script>
+          firstLoad = () => {
+            createBtn ();
+          }
+
+          createBtn = () => {
+              let btn = document.createElement ("button");
+              btn.innerHTML = "Click this button to find out more about me";
+              btn.onclick = () => { document.getElementById ("span1").innerHTML = "<b>I'm Victor from Singapore! </b><br>"; }
+              document.getElementById ("div1").after (btn);
+          } // createBtn
+
+          toggleVisibility = (ele) => {
+            document.getElementById (ele).className = (document.getElementById (ele).className == "div_hidden") ? "div_show" : "div_hidden";
+          } // toggleVisibility
+
+          ajax = async (page) => {
+            let response = await fetch (page);
+            let text = await response.text ();
+            document.getElementById ("div_links").innerHTML = text;
+
+          } // ajax
+
+        </script>
+
+        <style>
+
+        </style>
+    </head>
+
+  <body onload="firstLoad ();">
+    <div id="navigation">
+      <div>
+        <a href="https://www.edx.org/course/cs50s-introduction-to-computer-science"><img src="https://i.ytimg.com/vi/FsYdgKO4AQU/maxresdefault.jpg" width="10%" alt="cs50 logo" /></a>
+      </div>
+
+      <div class="dropdown">
+        <div class="dropbtn" onclick="document.getElementById ('dropdown-content').style.display = (document.getElementById ('dropdown-content').style.display == 'none') ? 'block' : 'none';">
+          <div style="display: grid; grid-template-columns: auto auto;">
+            <div class="bars" >
+              <div class="bar1"></div>
+              <div class="bar2"></div>
+              <div class="bar3"></div>
+            </div>
+            <div class="menucontainer">MENU</div>
+          </div>
+        </div>
+
+        <div id="dropdown-content" style="display: none;">
+          <a href="#" onclick="ajax ('page1.html'); document.getElementById ('dropdown-content').style.display = 'none';">Page 1</a>
+          <a href="#" onclick="ajax ('page2.html'); document.getElementById ('dropdown-content').style.display = 'none';">Page 2</a>
+          <a href="#" onclick="ajax ('page3.html'); document.getElementById ('dropdown-content').style.display = 'none';">Page 3</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="body_content">
+
+        <div class="jumbotron text-center">
+          <p>Hi there, welcome!</p>
+          <p>This site is to demostrate all the requirements of cs50 pset8.</p>
+          <p>Click on the Menu to the top right to open different pages using AJAX. </p>
+          <br><br>
+          <p style="font-size: 70%;">*This grey box is a bootstrap jumbotron</p>
+        </div>
+
+
+
+        <br>
+        <span id="span1"></span>
+
+        <br>
+
+        <button type="button" onclick="toggleVisibility ('div_h');">Headers</button>
+
+        <div id="div_h" class="div_hidden">
+          <header>
+            <h1>This is a h1.</h1>
+            <h2>This is a h2.</h2>
+            <h3>This is a h3.</h3>
+          </header>
+        </div>
+        <br><br>
+
+        <div id="div_links"></div>
+
+      </div>
+
+    </body>
+</html>

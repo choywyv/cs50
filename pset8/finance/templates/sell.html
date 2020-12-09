@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sell
+{% endblock %}
+
+{% block main %}
+
+  <form action="/sell" method="post" id="form1">
+    <div class="form-group">
+      <select name="symbol" id="symbol" onchange="get_price (this.value);" autofocus>
+        <option selected>Select stock</option>
+      </select>
+      <div id="div1"></div>
+    </div>
+    <div class="form-group">
+      <input type="number" name="shares" value="1" placeholder="Enter quantity to sell">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+  <script src="/static/script.js"></script>
+
+  <script>
+
+    let symbols = {{ symbols|safe }}, sel = document.getElementById ("symbol"), opt;
+
+    for (var i = 0; i < symbols.length; i++) {
+      Object.values (symbols[i]).forEach ((item) => {
+        opt = document.createElement ("option");
+        opt.innerHTML = item;
+        opt.value = item;
+        sel.appendChild (opt);
+      });
+    }
+
+    {% if not symbol == "None" %}
+      document.getElementById ("symbol").value = "{{ symbol }}";
+    {% endif %}
+
+  get_price = async (val) => {
+    document.getElementById ('div1').innerHTML = await getPrice (val);
+  }
+
+
+</script>
+
+{% endblock %}
